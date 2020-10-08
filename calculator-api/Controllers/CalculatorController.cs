@@ -14,7 +14,7 @@ namespace calculator_api.Controllers
     public class CalculatorController : ControllerBase
     {
 
-        private CalculatorService service;
+        private readonly CalculatorService service;
 
         public CalculatorController()
         {
@@ -25,8 +25,15 @@ namespace calculator_api.Controllers
         [Route("calculate")]
         public Sum Calculate(Sum sum)
         {
-            sum.Answer = service.Calculate(sum.Num1, sum.Num2, sum.OperatorString);
-            return sum;
+            try
+            {
+
+                sum = service.Calculate(sum.Num1, sum.Num2, sum.OperatorString);
+                return sum;
+            } catch (Exception)
+            {
+                return null;
+            }
         }
 
     }

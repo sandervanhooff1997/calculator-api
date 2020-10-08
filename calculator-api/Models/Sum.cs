@@ -16,5 +16,10 @@ namespace calculator_api
                 return Answer.ToString(CultureInfo.CreateSpecificCulture("nl-NL"));
             }
         }
+
+        public override string ToString()
+        {
+            return $"Sum {Num1} {OperatorString} {Num2} = {AnswerString}";
+        }
     }
 }

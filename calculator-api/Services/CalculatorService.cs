@@ -1,7 +1,7 @@
 ﻿using System;
 namespace calculator_api.Services
 {
-    public class CalculatorService
+    public class CalculatorService : BaseService
     {
         private readonly int decimals = 10;
             
@@ -10,24 +10,35 @@ namespace calculator_api.Services
 
         }
 
-        public decimal Calculate(decimal num1, decimal num2, string operatorString)
+        public Sum Calculate(decimal num1, decimal num2, string operatorString)
         {
+            var sum = new Sum()
+            {
+                Num1 = num1,
+                Num2 = num2,
+                OperatorString = operatorString
+            };
+
             switch (operatorString)
             {
                 case "+":
-                    return Math.Round(Add(num1, num2), decimals);
-
+                    sum.Answer = Math.Round(Add(num1, num2), decimals);
+                    break;
                 case "-":
-                    return Math.Round(Subtract(num1, num2), decimals);
-
+                    sum.Answer = Math.Round(Subtract(num1, num2), decimals);
+                    break;
                 case "*":
-                    return Math.Round(Multiply(num1, num2), decimals);
-
+                    sum.Answer = Math.Round(Multiply(num1, num2), decimals);
+                    break;
                 case "/":
-                    return Math.Round(Devide(num1, num2), decimals);
+                    sum.Answer = Math.Round(Devide(num1, num2), decimals);
+                    break;
+                default: throw new Exception($"Operator {operatorString} niet ondersteund.");
             }
 
-            throw new Exception($"Operator {operatorString} niet ondersteund.");
+            logService.Log(sum.ToString());
+
+            return sum;
         }
 
         private decimal Add(decimal num1, decimal num2)
